@@ -5,3 +5,4 @@ backend/api/routes.ts
 backend/api/swagger.json
 backend/.env
 ./**/.env
+./**/logs/
