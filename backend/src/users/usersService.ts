@@ -5,20 +5,13 @@ import pool from "../db";
 export type UserCreationParams = Pick<User, "email" | "name">;
 
 export class UsersService {
-  public async get(id: number, name?: string): Promise<User> {
+  public async get(id: number, name?: string): Promise<User | undefined> {
     const result = await pool.query('SELECT $1::text as name', ['brianc']);
 
-    return {
-      id,
-      email: "jane@doe.com",
-      name: name ?? "Jane Doe",
-    };
+    return undefined;
   }
 
-  public create(userCreationParams: UserCreationParams): User {
-    return {
-      id: Math.floor(Math.random() * 10000), // Random
-      ...userCreationParams,
-    };
+  public create(userCreationParams: UserCreationParams): undefined {
+    return undefined;
   }
 }

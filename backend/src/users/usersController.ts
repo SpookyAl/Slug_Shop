@@ -17,7 +17,7 @@ export class UsersController extends Controller {
   public async getUser(
     @Path() userId: number,
     @Query() name?: string
-  ): Promise<User> {
+  ): Promise<User | undefined> {
     return new UsersService().get(userId, name);
   }
 

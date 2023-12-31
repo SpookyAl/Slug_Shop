@@ -1,3 +1,2 @@
-INSERT INTO users (username, email) VALUES
-('john_doe', 'john.doe@example.com'),
-('jane_doe', 'jane.doe@example.com');
+INSERT INTO users (name, username, email, password)
+VALUES ('John Doe', 'johndoe', 'johndoe@ucsc.edu', crypt('password', gen_salt('bf')));
