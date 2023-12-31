@@ -1,25 +1,37 @@
-import express, { json, urlencoded, Request as ExRequest, Response as ExResponse, NextFunction } from "express";
+import express, {
+  Express,
+  Router,
+  Response as ExResponse,
+  Request as ExRequest,
+  ErrorRequestHandler
+} from 'express';
 import swaggerUi from "swagger-ui-express";
 import { RegisterRoutes } from "../api/routes";
-import fs from 'fs';
-import YAML from 'yaml';
+import cors from 'cors';
 import * as path from "path";
 
-export const app = express();
-const file  = fs.readFileSync(path.resolve(__dirname, "../api/openapi.yaml"), 'utf8')
-const swaggerDocument = YAML.parse(file)
+const app: Express = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
-// Use body parser to read sent json payloads
-app.use(
-    urlencoded({
-        extended: true,
-    })
-);
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-RegisterRoutes(app);
-
-app.use((req, res, next) => {
-    res.status(404).send({ status: "not found" });
+app.use('/api/v0/docs', swaggerUi.serve, async (_req: ExRequest, res: ExResponse) => {
+  return res.send(
+    swaggerUi.generateHTML(await import(path.resolve(__dirname, "../api/swagger.json")))
+  );
 });
+
+const router = Router();
+RegisterRoutes(router);
+app.use('/api/v0', router);
+
+const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
+  res.status(err.status).json({
+    message: err.message,
+    errors: err.errors,
+    status: err.status,
+  });
+};
+app.use(errorHandler);
+
+export default app;
