@@ -10,15 +10,16 @@ import {
 } from "tsoa";
 import { User } from "./user";
 import { UsersService, UserCreationParams } from "./usersService";
+import logger from "../logger";
 
 @Route("users")
 export class UsersController extends Controller {
   @Get("{userId}")
   public async getUser(
-    @Path() userId: number,
-    @Query() name?: string
+    @Path() userId: string,
   ): Promise<User | undefined> {
-    return new UsersService().get(userId, name);
+    logger.error(`userId: ${userId}`);
+    return await new UsersService().get(userId);
   }
 
   // @SuccessResponse("201", "Created") // Custom success response
