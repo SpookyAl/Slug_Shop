@@ -3,3 +3,5 @@ frontend/node_modules
 backend/build/
 backend/api/routes.ts
 backend/api/swagger.json
+backend/.env
+./**/.env
