@@ -11,3 +11,10 @@ export interface User {
 }
 
 export type Role = "admin" | "user" | "guest" | "none";
+
+export interface UserCreationParams {
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+}

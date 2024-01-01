@@ -1,12 +1,8 @@
-import { User } from "./user";
+import {User, UserCreationParams} from "./user";
 import pool from "../db";
-import logger from "../logger";
-
-// A post request should not contain an id.
-export type UserCreationParams = Pick<User, "email" | "name">;
 
 export class UsersService {
-  public async get(id: string): Promise<User | undefined> {
+  public async get(id: string): Promise<User> {
     const statement = 'SELECT * FROM users WHERE id = $1';
 
     const query = {
@@ -16,12 +12,26 @@ export class UsersService {
 
     const result = await pool.query(query);
 
-    logger.info(result.rows);
+    if (result.rowCount === 0) {
+      throw new Error(`No user found with id: ${id}`);
+    }
 
     return result.rows[0];
   }
 
-  public create(userCreationParams: UserCreationParams): undefined {
-    return undefined;
+  public async create(userCreationParams: UserCreationParams): Promise<User> {
+    const statement = "INSERT INTO users (name, username, email, password) VALUES ($1, $2, $3, crypt($4, gen_salt('bf'))) RETURNING *";
+    const query = {
+      text: statement,
+      values: [userCreationParams.name, userCreationParams.username, userCreationParams.email, userCreationParams.password],
+    }
+
+    const result = await pool.query(query);
+
+    if (result.rowCount === 0) {
+      throw new Error(`User was unable to be created.`);
+    }
+
+    return result.rows[0];
   }
 }
