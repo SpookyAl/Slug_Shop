@@ -5,8 +5,8 @@ Here we have the middleware and Postgres database for Slug Shop. Our middleware 
 ## Pre-requisites
 - Docker
 - Node.js
-- TSOA CLI
-- Typescript
+- TSOA CLI - npm install -g tsoa
+- Typescript - npm install -g typescript
 - .env file
 
 ## Getting Started
@@ -17,7 +17,7 @@ npm install
 
 Secondly, still on the `backend` directory, run the following command to start the bash server:
 ```bash
-docker compose up
+docker compose up -d
 ```
 
 Once done, you can now run the following command to start the development server:
