@@ -1,5 +1,5 @@
-import {Body, Controller, Get, Path, Post, Route, SuccessResponse,} from "tsoa";
-import {User, UserCreationParams} from "./user";
+import {Body, Controller, Get, Path, Post, Route, Security, SuccessResponse,} from "tsoa";
+import {Role, User, UserCreationParams} from "./user";
 import {UsersService} from "./usersService";
 import logger from "../logger";
 
@@ -9,8 +9,6 @@ export class UsersController extends Controller {
   public async getUser(
     @Path() userId: string,
   ): Promise<User> {
-    logger.info(`Getting user with userId: ${userId}`);
-
     try {
       return await new UsersService().get(userId);
     } catch (e) {
@@ -20,6 +18,12 @@ export class UsersController extends Controller {
 
     // Return an empty object to avoid returning null
     return {} as User;
+  }
+
+  @Get()
+  @Security("jwt", ["admin"])
+  public async getAllUsers(): Promise<User[]> {
+    return await new UsersService().getAll();
   }
 
   @SuccessResponse("201", "Created") // Custom success response

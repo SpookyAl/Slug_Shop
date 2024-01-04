@@ -3,11 +3,22 @@
   "noImplicitAdditionalProperties": "throw-on-extras",
   "controllerPathGlobs": ["src/**/*Controller.ts"],
   "spec": {
+    "schemes": [ "http" ],
     "outputDirectory": "api",
     "specVersion": 3,
-    "basePath": "/api/v0"
+    "basePath": "/api/v0",
+    "securityDefinitions": {
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT token"
+      }
+    }
   },
   "routes": {
-    "routesDir": "api"
+    "routesDir": "api",
+    "middleware": "express",
+    "authenticationModule": "./src/auth/expressAuth.ts"
   }
 }

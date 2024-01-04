@@ -19,6 +19,18 @@ export class UsersService {
     return result.rows[0];
   }
 
+  public async getAll(): Promise<User[]> {
+    const statement = 'SELECT * FROM users';
+
+    const query = {
+      text: statement,
+    }
+
+    const result = await pool.query(query);
+
+    return result.rows;
+  }
+
   public async create(userCreationParams: UserCreationParams): Promise<User> {
     const statement = "INSERT INTO users (name, username, email, password) VALUES ($1, $2, $3, crypt($4, gen_salt('bf'))) RETURNING *";
     const query = {
