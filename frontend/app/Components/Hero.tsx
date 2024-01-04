@@ -1,9 +1,11 @@
 import React from 'react'
 import './Hero.css'
+import Navbar from './Navbar'
 
 const Hero = () => {
   return (
     <div className='hero'>
+      
       <div className="hero-left">
         <h2>EXPLORE SLUGSHOP DEALS</h2>
         <div>
