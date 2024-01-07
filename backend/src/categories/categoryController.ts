@@ -1,6 +1,5 @@
 // src/users/usersController.ts
 import {
-    Body,
     Controller,
     Get,
     Path,
@@ -9,27 +8,28 @@ import {
     Route,
     SuccessResponse,
 } from "tsoa";
+import {CategoryService} from "./categoryService";
 
 //import correct paths
 
 
-@Route("users")
-export class UsersController extends Controller {
+@Route("category")
+export class CategoryController extends Controller {
     @Get("{userId}")
-  public async getUser(
+  public async getCategory(
       @Path() userId: number,
       @Query() name?: string
-      ): Promise<User> {
-        return new UsersService().get(userId, name);
+      ): Promise<void> {
+        return new CategoryService().get();
     }
 
     @SuccessResponse("201", "Created") // Custom success response
   @Post()
-  public async createUser(
-      @Body() requestBody: UserCreationParams
+  public async createCategory(
+
       ): Promise<void> {
         this.setStatus(201); // set return status 201
-        new UsersService().create(requestBody);
+        new CategoryService().create();
         return;
     }
 }
